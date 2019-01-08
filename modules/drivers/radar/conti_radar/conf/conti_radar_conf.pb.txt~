@@ -6,8 +6,8 @@ can_conf {
     channel_id: CHANNEL_ID_ONE
   }
 
-  enable_debug_mode: true
-  enable_receiver_log: true
+  enable_debug_mode: false
+  enable_receiver_log: false
 }
 
 radar_conf {

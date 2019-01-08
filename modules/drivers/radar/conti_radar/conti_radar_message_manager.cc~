@@ -77,12 +77,10 @@ void ContiRadarMessageManager::Parse(const uint32_t message_id,
   }
 
   std::lock_guard<std::mutex> lock(sensor_data_mutex_);
-/*
   if (!is_configured_ && message_id != RadarState201::ID) {
     // read radar state message first
     return;
   }
-*/
 
   // trigger publishment
   if (message_id == ClusterListStatus600::ID ||
