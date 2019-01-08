@@ -30,7 +30,8 @@ namespace conti_radar {
 using apollo::drivers::canbus::Byte;
 
 ObjectGeneralInfo60B::ObjectGeneralInfo60B() {}
-const uint32_t ObjectGeneralInfo60B::ID = 0x60B;
+//const uint32_t ObjectGeneralInfo60B::ID = 0x60B;
+const uint32_t ObjectGeneralInfo60B::ID = 0x70C;
 
 void ObjectGeneralInfo60B::Parse(const std::uint8_t* bytes, int32_t length,
                                  ContiRadar* conti_radar) const {
@@ -61,6 +62,7 @@ int ObjectGeneralInfo60B::object_id(const std::uint8_t* bytes,
 
 double ObjectGeneralInfo60B::longitude_dist(const std::uint8_t* bytes,
                                             int32_t length) const {
+/*
   Byte t0(bytes + 1);
   int32_t x = t0.get_byte(0, 8);
 
@@ -71,6 +73,18 @@ double ObjectGeneralInfo60B::longitude_dist(const std::uint8_t* bytes,
   x |= t;
 
   double ret = x * OBJECT_DIST_RES + OBJECT_DIST_LONG_MIN;
+*/
+
+  Byte t0(bytes + 2);
+  int32_t x = t0.get_byte(0, 8);
+
+  Byte t1(bytes + 3);
+  int32_t t = t1.get_byte(0, 8);
+
+  x <<= 8;
+  x |= t;
+
+  double ret = x * 0.01;	
   return ret;
 }
 
@@ -91,6 +105,7 @@ double ObjectGeneralInfo60B::lateral_dist(const std::uint8_t* bytes,
 
 double ObjectGeneralInfo60B::longitude_vel(const std::uint8_t* bytes,
                                            int32_t length) const {
+/*
   Byte t0(bytes + 4);
   int32_t x = t0.get_byte(0, 8);
   Byte t1(bytes + 5);
@@ -99,6 +114,15 @@ double ObjectGeneralInfo60B::longitude_vel(const std::uint8_t* bytes,
   x <<= 2;
   x |= t;
   double ret = x * OBJECT_VREL_RES + OBJECT_VREL_LONG_MIN;
+*/
+  Byte t0(bytes + 5);
+  int32_t x = t0.get_byte(0, 3);
+  Byte t1(bytes + 6);
+  int32_t t = t1.get_byte(0, 8);
+
+  x <<= 8;
+  x |= t;
+  double ret = x * 0.05 -35;
   return ret;
 }
 
@@ -128,10 +152,16 @@ double ObjectGeneralInfo60B::rcs(const std::uint8_t* bytes,
 
 int ObjectGeneralInfo60B::dynprop(const std::uint8_t* bytes,
                                   int32_t length) const {
+/*
   Byte t0(bytes + 6);
   int32_t x = t0.get_byte(0, 3);
 
   int ret = x;
+*/
+  Byte t0(bytes + 4);
+  int32_t x = t0.get_byte(0, 8);
+
+  int ret = x - 90;
   return ret;
 }
 
