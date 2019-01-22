@@ -24,7 +24,7 @@
 #include <utility>
 
 #include "modules/planning/common/speed_profile_generator.h"
-#include "modules/planning/toolkits/task_factory.h"
+#include "modules/planning/tasks/task_factory.h"
 
 namespace apollo {
 namespace planning {
@@ -104,6 +104,11 @@ bool Stage::ExecuteTaskOnReferenceLine(
     return true;
   }
   return true;
+}
+
+Stage::StageStatus Stage::FinishScenario() {
+  next_stage_ = ScenarioConfig::NO_STAGE;
+  return Stage::FINISHED;
 }
 
 }  // namespace scenario
